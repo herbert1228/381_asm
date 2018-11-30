@@ -4,8 +4,10 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const uuid = require("uuid/v4")
 const MongoClient = require("mongodb").MongoClient
+const ObjectID = require('mongodb').ObjectID
 const assert = require("assert")
-const fs = require("fs")
+//const fs = require("fs")
+//const formidable = require("formidable")
 
 const SECRETKEY = "DON'T HACK MY SERVER, BE DISCIPLINED"
 const MongoURL = "mongodb://developer:developer123@ds143593.mlab.com:43593/herbert1228"
@@ -52,7 +54,7 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.use((req, res, next) => { //next()
-    console.log(req.session)
+    //console.log(req.session)
     if (req.session.authenticated){
       next()
     } else {
@@ -71,6 +73,17 @@ MongoClient.connect(MongoURL, (err, db) => {
     })
   })
 
+  app.get("/display", (req, res) => {
+    const criteria = {_id: ObjectID(req.query._id)}
+    findRestaurant(db, criteria, (r) => {
+      if (r[0] != undefined) {
+        res.render("display", {r: r[0], error: null})
+      } else {
+        res.render("display", {error: "restaurant not found"})
+      }
+    })
+  })
+
   app.get("/create", (req, res) => {
     res.render("create")
   })
@@ -82,26 +95,31 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.post("/api/restaurant/", (req, res) => {
-    const {name, borough, photo, cuisine, street, building, zipcode, coordX, coordY} = req.body
+    const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.body
     const owner = req.session.userid
     assert.notEqual(owner, null)
     assert.notEqual(name, null)
 
-    let new_photo = null
+    //const form = new formidable.IncomingForm()
 
-    if (photo != "" && photo.size != 0) {
-      const mimetype = photo.type
-      console.log("photo: ", photo)
-      fs.readFile(photo.path, function (err, data) {
-        new_photo = {
-          mimetype,
-          image: new Buffer(data).toString("base64")
-        }
-      })
-    }
+    // form.parse(req, function (err, fields, files) {
+    //   console.log("files", JSON.stringify(files))
+    //
+    let new_photo
+    //   const filename = files.photo.path
+    //   if (files.photo.size != 0) {
+    //     const mimetype = files.photo.type
+    //
+    //     fs.readFile(filename, function (err, data) {
+    //       new_photo = {
+    //         mimetype,
+    //         image: new Buffer(data).toString("base64")
+    //       }
+    //     })
+    //   }
 
     db.collection(RESTAURANT).insertOne(
-      {name, borough, cuisine, new_photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
+      {_id: uuid(), name, borough, cuisine, new_photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
       (err, result) => {
         if (!result) {
           res.render("create", {error: "some error occurs"})
@@ -109,9 +127,21 @@ MongoClient.connect(MongoURL, (err, db) => {
         res.redirect("/read")
       }
     )
+    // })
+  })
+
+  app.get("/rate", (req, res) => {
+    res.render("rate")
+  })
+
+  app.post("/rate", (req, res) => {
+    // const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.body
+    // const owner = req.session.userid
+    res.end("Coming Soon...")
   })
 
   app.listen(8099)
+  console.log("server started!")
 })
 
 function findRestaurant(db, criteria, callback) {

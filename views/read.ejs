@@ -7,9 +7,14 @@
     <H1>Restaurant</H1>
     <H3>User: <%=self%></H3>
     <p>Restaurant name:</p>
-    <% restaurant.forEach( r => { %>
-      <%=r.name%>
-    <% }) %>
+    <ol>
+      <% restaurant.forEach( r => { %>
+        <li>
+          <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
+        </li>
+      <% }) %>
+    </ol>
+
     <% if (restaurant.length == 0) { %>
       <p>No restaurants found</p>
     <% } %>

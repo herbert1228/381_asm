@@ -1,0 +1,43 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <title>Rate</title>
+  </head>
+
+  <body>
+    <% if (typeof error != "undefined") { %>
+      <p><%=error%><p>
+    <% } %>
+
+    <nav class="navbar" style="background-color:#152934">
+      <div class="navbar-brand">
+        <h1 class="title is-1" style="color: #dee1e3">Rate</h1>
+      </div>
+    </nav>
+
+    <div class="section">
+      <form action='/rate' method='post'>
+
+        <div class="field">
+          <label class="label">Score(1-10):</label>
+          <div class="control">
+            <input name="rate" class="input" type="text" required="required" max="10" min="0"/>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Rate</button>
+          </div>
+        </div>
+
+        <div class="control">
+          <a class="button is-text" href="/read">Back</a>
+        </div>
+
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <a href="/read">back</a><br>
+    <% if (error == null) { %>
+      Borough: <%=r.borough%><br>
+      Cuisine: <%=r.cuisine%><br>
+      Street: <%=r.street%><br>
+      Building: <%=r.building%><br>
+      Zipcode: <%=r.zipcode%><br>
+      GPS: [<%=r.corrdX%>, <%=r.corrdY%>]<br>
+      Rating:
+      <% if (typeof r.rating == "undefined") { %>
+        No rating yet
+      <% } else r.rating.forEach(rate => rate) %>
+      <br>
+      Created by: <%=r.owner%><br>
+      <a href="/googlemap?lat=<%=r.coordX%>&lon=<%=r.coordY%>">Google Map</a><br>
+      <a href="/rate?_id=<%=r._id%>">rate</a><br>
+    <% } else { %>
+      <%=error%>
+    <% } %>
+  </body>
+</html>
