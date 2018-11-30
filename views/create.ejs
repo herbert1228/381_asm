@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Create new restaurant</title>
+  </head>
+  <body>
+    <form action='/api/restaurant/' method='post' encType='multipart/form-data'>
+      Restaurant name: <input type='text' name='name' required><br>
+      Borough: <input type='text' name='borough'><br>
+      Cuisine: <input type='text' name='cuisine'><br>
+      Photo: <input type='text' name='photo'><br>
+      Street: <input type='file' name='street'><br>
+      Building: <input type='number' name='building'><br>
+      Zipcode: <input type='number' name='zipcode'><br>
+      Coordinate: <input type='file' name='coord'><br>
+      <input type='submit' value='Create' />
+    </form>
+  </body>
+</html>
