@@ -21,7 +21,6 @@ const users = [
 MongoClient.connect(MongoURL, (err, db) => {
   if (err) throw err
   //const db = client.db("herbert1228")
-
   app.set("view engine", "ejs")
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
@@ -148,7 +147,6 @@ app.post("/api/restaurant/update", (req, res, next) => {
     }
   )
 })
-
 app.listen(8099)
 })
 
