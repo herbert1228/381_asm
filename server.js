@@ -4,6 +4,7 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const uuid = require("uuid/v4")
 const MongoClient = require("mongodb").MongoClient
+const ObjectId = require("mongodb").ObjectID
 const assert = require("assert")
 const fs = require("fs")
 
@@ -113,6 +114,44 @@ MongoClient.connect(MongoURL, (err, db) => {
 
   app.listen(8099)
 })
+
+
+app.post("/api/restaurant/update", (req, res, next) => {
+  const {name, borough, photo, cuisine, street, building, zipcode, coordX, coordY} = req.body
+  const owner = req.session.userid
+  assert.notEqual(owner, null)
+  assert.notEqual(name, null)
+
+  let new_photo = null
+
+  if (photo != "" && photo.size != 0) {
+    const mimetype = photo.type
+    console.log("photo: ", photo)
+    fs.readFile(photo.path, function (err, data) {
+      new_photo = {
+        mimetype,
+        image: new Buffer(data).toString("base64")
+      }
+    })
+  }
+
+  db.collection(RESTAURANT).updateOne(
+    {"_id": ObjectId(id)}, owner},{$set: {name, borough, photo, cuisine, street, building, zipcode, coordX, coordY}},
+    (err, result) => {
+      if (!result) {
+        res.render("create", {error: "some error occurs"})
+      }
+      assert.equal(null,err)
+      console.log("Item Updated!")
+      db.close()
+      res.redirect("/read")
+    }
+  )
+})
+
+app.listen(8099)
+})
+
 
 function findRestaurant(db, criteria, callback) {
   const restaurants = []
