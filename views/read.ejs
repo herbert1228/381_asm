@@ -1,0 +1,17 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <a href="/create">create new restaurant</a>
+    <H1>Restaurant</H1>
+    <H3>User: <%=self%></H3>
+    <p>Restaurant name:</p>
+    <% restaurant.forEach( r => { %>
+      <%=r.name%>
+    <% }) %>
+    <% if (restaurant.length == 0) { %>
+      <p>No restaurants found</p>
+    <% } %>
+  </body>
+</html>

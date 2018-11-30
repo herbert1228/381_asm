@@ -4,10 +4,11 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const uuid = require("uuid/v4")
 const MongoClient = require("mongodb").MongoClient
+const assert = require("assert")
+const fs = require("fs")
 
 const SECRETKEY = "DON'T HACK MY SERVER, BE DISCIPLINED"
-const MongoURL = process.env.MONGOURL
-console.log(MongoURL)
+const MongoURL = "mongodb://developer:developer123@ds143593.mlab.com:43593/herbert1228"
 
 const RESTAURANT = "rest"
 
@@ -18,6 +19,7 @@ const users = [
 
 MongoClient.connect(MongoURL, (err, db) => {
   if (err) throw err
+  //const db = client.db("herbert1228")
 
   app.set("view engine", "ejs")
   app.use(bodyParser.urlencoded({ extended: false }))
@@ -34,7 +36,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     if (!req.session.authenticated){
       res.status(200).render("login")
     } else {
-      res.redirect("/api/restaurant/")
+      res.redirect("/read")
     }
   })
 
@@ -46,7 +48,7 @@ MongoClient.connect(MongoURL, (err, db) => {
         req.session.userid = req.body.userid
       }
     }
-    res.redirect("/api/restaurant/")
+    res.redirect("/read")
   })
 
   app.use((req, res, next) => { //next()
@@ -63,27 +65,63 @@ MongoClient.connect(MongoURL, (err, db) => {
     res.redirect("/")
   })
 
-  app.get("/api/restaurant/", (req, res) => {
-    res.render("create")
-  })
-
-  app.post("/api/restaurant/", (req, res) => {
-    const {name, borough, cuisine, street, building, zipcode, coord} = req.body
-    console.log(req.body, req.body.name)
-    const owner = req.session.userid
-    if (name == null || owner == null) {
-      console.log(name, owner)
-      res.end("name or owner cannot be null")
-      return
-    }
-    db.collection(RESTAURANT, (err, collection) => {
-      if (err) throw err
-      collection.insert({
-        name, borough, cuisine, address: {street, building, zipcode, coord}, owner
-      })
+  app.get("/read", (req, res) => {
+    findRestaurant(db, {}, (restaurant) => {
+      res.render("read", {restaurant, self: req.session.userid})
     })
   })
 
-  app.listen(8099)
+  app.get("/create", (req, res) => {
+    res.render("create")
+  })
 
+  app.get("/api/restaurant/", (req, res) => {
+    findRestaurant(db, {}, (restaurant) => {
+      res.json({restaurant})
+    })
+  })
+
+  app.post("/api/restaurant/", (req, res) => {
+    const {name, borough, photo, cuisine, street, building, zipcode, coord} = req.body
+    const owner = req.session.userid
+    assert.notEqual(owner, null)
+    assert.notEqual(name, null)
+
+    let new_photo = null
+
+    if (photo != "" && photo.size != 0) {
+      const mimetype = photo.type
+      console.log("photo: ", photo)
+      fs.readFile(photo.path, function (err, data) {
+        new_photo = {
+          mimetype,
+          image: new Buffer(data).toString("base64")
+        }
+      })
+    }
+
+    db.collection(RESTAURANT).insertOne(
+      {name, borough, cuisine, new_photo, address: {street, building, zipcode, coord}, owner},
+      (err, result) => {
+        if (!result) {
+          res.render("create", {error: "some error occurs"})
+        }
+        res.redirect("/read")
+      }
+    )
+  })
+
+  app.listen(8099)
 })
+
+function findRestaurant(db, criteria, callback) {
+  const restaurants = []
+  db.collection(RESTAURANT).find(criteria).each(function (err, doc) {
+    assert.equal(err, null)
+    if (doc != null) {
+      restaurants.push(doc)
+    } else {
+      callback(restaurants)
+    }
+  })
+}

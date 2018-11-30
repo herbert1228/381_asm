@@ -4,12 +4,15 @@
     <title>Create new restaurant</title>
   </head>
   <body>
-    <form action='/api/restaurant/' method='post' encType='multipart/form-data'>
+    <% if (typeof error != "undefined") { %>
+      <p><%=error%><p>
+    <% } %>
+    <form action='/api/restaurant/' method='post'>
       Restaurant name: <input type='text' name='name' required><br>
       Borough: <input type='text' name='borough'><br>
       Cuisine: <input type='text' name='cuisine'><br>
-      Photo: <input type='text' name='photo'><br>
-      Street: <input type='file' name='street'><br>
+      Photo: <input type="file" name="photo"><br>
+      Street: <input type='text' name='street'><br>
       Building: <input type='number' name='building'><br>
       Zipcode: <input type='number' name='zipcode'><br>
       Coordinate: <input type='file' name='coord'><br>
