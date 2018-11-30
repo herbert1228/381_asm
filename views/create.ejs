@@ -1,22 +1,99 @@
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <title>Create new restaurant</title>
   </head>
+
   <body>
     <% if (typeof error != "undefined") { %>
       <p><%=error%><p>
     <% } %>
-    <form action='/api/restaurant/' method='post'>
-      Restaurant name: <input type='text' name='name' required><br>
-      Borough: <input type='text' name='borough'><br>
-      Cuisine: <input type='text' name='cuisine'><br>
-      Photo: <input type="file" name="photo"><br>
-      Street: <input type='text' name='street'><br>
-      Building: <input type='number' name='building'><br>
-      Zipcode: <input type='number' name='zipcode'><br>
-      Coordinate: <input type='file' name='coord'><br>
-      <input type='submit' value='Create' />
+
+    <nav class="navbar" style="background-color:#152934">
+      <div class="navbar-brand">
+        <h1 class="title is-1" style="color: #dee1e3">Create New Restaurant</h1>
+      </div>
+    </nav>
+
+    <div class="section">
+      <form action='/api/restaurant/' method='post'>
+
+        <div class="field">
+          <label class="label">Restaurant name:</label>
+          <div class="control">
+            <input name="rest_name" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Borugh:</label>
+          <div class="control">
+            <input name="borough" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Cuisine:</label>
+          <div class="control">
+            <input name="cuisine" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Photo:</label>
+          <div class="control">
+            <input type="file" name="photo"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Street:</label>
+          <div class="control">
+            <input name="street" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Building:</label>
+          <div class="control">
+            <input name="building" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Zipcode:</label>
+          <div class="control">
+            <input name="zipcode" class="input" type="text"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Coordinate X:</label>
+          <div class="control">
+            <input type="text" name="coordX"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Coordinate Y:</label>
+          <div class="control">
+            <input type="text" name="coordY"/>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Create</button>
+          </div>
+        </div>
+
+        <div class="control">
+          <a class="button is-text" href="/">Back</a>
+        </div>
+
+      </div>
     </form>
   </body>
 </html>

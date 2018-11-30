@@ -82,7 +82,7 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.post("/api/restaurant/", (req, res) => {
-    const {name, borough, photo, cuisine, street, building, zipcode, coord} = req.body
+    const {name, borough, photo, cuisine, street, building, zipcode, coordX, coordY} = req.body
     const owner = req.session.userid
     assert.notEqual(owner, null)
     assert.notEqual(name, null)
@@ -101,7 +101,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     }
 
     db.collection(RESTAURANT).insertOne(
-      {name, borough, cuisine, new_photo, address: {street, building, zipcode, coord}, owner},
+      {name, borough, cuisine, new_photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
       (err, result) => {
         if (!result) {
           res.render("create", {error: "some error occurs"})
