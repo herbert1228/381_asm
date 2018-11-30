@@ -5,6 +5,7 @@
   <body>
     <a href="/read">back</a><br>
     <% if (error == null) { %>
+      Name: <%=r.name%><br>
       Borough: <%=r.borough%><br>
       Cuisine: <%=r.cuisine%><br>
       Street: <%=r.street%><br>
@@ -18,7 +19,8 @@
       <br>
       Created by: <%=r.owner%><br>
       <a href="/googlemap?lat=<%=r.coordX%>&lon=<%=r.coordY%>">Google Map</a><br>
-      <a href="/rate?_id=<%=r._id%>">rate</a><br>
+      <a href="/rate?_id=<%=r._id%>">Rate</a><br>
+      <a href="/change?_id=<%=r._id%>">Edit</a><br>
     <% } else { %>
       <%=error%>
     <% } %>

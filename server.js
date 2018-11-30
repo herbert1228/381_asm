@@ -4,7 +4,7 @@ const bodyParser = require("body-parser")
 const session = require("express-session")
 const uuid = require("uuid/v4")
 const MongoClient = require("mongodb").MongoClient
-const ObjectID = require('mongodb').ObjectID
+const ObjectID = require("mongodb").ObjectID
 const assert = require("assert")
 //const fs = require("fs")
 //const formidable = require("formidable")
@@ -43,9 +43,9 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.post("/login", (req,res) => {
-    for (var i=0; i<users.length; i++) {
-      if (users[i].userid == req.body.userid &&
-        users[i].password == req.body.password) {
+    for (let i=0; i<users.length; i++) {
+      if (users[i].userid === req.body.userid &&
+        users[i].password === req.body.password) {
         req.session.authenticated = true
         req.session.userid = req.body.userid
       }
@@ -121,6 +121,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     db.collection(RESTAURANT).insertOne(
       {_id: uuid(), name, borough, cuisine, new_photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
       (err, result) => {
+        assert.equal(err, null)
         if (!result) {
           res.render("create", {error: "some error occurs"})
         }
@@ -140,9 +141,55 @@ MongoClient.connect(MongoURL, (err, db) => {
     res.end("Coming Soon...")
   })
 
+  app.get("/change", (req, res) => {
+    const self = req.session.userid
+    const criteria = {_id: ObjectID(req.query._id), owner: self}
+    findRestaurant(db, criteria, (r) => {
+      if (r[0] !== undefined) {
+        res.render("change", {r: r[0], error: null})
+      } else {
+        res.render("change", {error: "rejected", r: {name: "Error: You are not authorized to edit"}})
+      }
+    })
+  })
+
+  app.post("/change", (req, res) => {
+    const {name, borough, cuisine, street, building, zipcode, coordX, coordY, _id} = req.body
+    const self = req.session.userid
+    assert.notEqual(self, null)
+    assert.notEqual(name, null)
+
+    let new_photo = null
+    //
+    // if (photo != "" && photo.size != 0) {
+    //   const mimetype = photo.type
+    //   console.log("photo: ", photo)
+    //   fs.readFile(photo.path, function (err, data) {
+    //     new_photo = {
+    //       mimetype,
+    //       image: new Buffer(data).toString("base64")
+    //     }
+    //   })
+    // }
+
+    db.collection(RESTAURANT).updateOne(
+      {_id: ObjectID(_id), owner: self},
+      {$set: {name, borough, new_photo, cuisine, street, building, zipcode, coordX, coordY}},
+      (err, result) => {
+        assert.equal(err, null)
+        if (!result) {
+          res.render("change", {error: "some error occurs", r: {name: "some error occurs"}})
+        } else {
+          res.redirect("/read")
+        }
+      }
+    )
+  })
+
   app.listen(8099)
   console.log("server started!")
 })
+
 
 function findRestaurant(db, criteria, callback) {
   const restaurants = []
