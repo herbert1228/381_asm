@@ -6,7 +6,7 @@ const uuid = require("uuid/v4")
 const MongoClient = require("mongodb").MongoClient
 
 const SECRETKEY = "DON'T HACK MY SERVER, BE DISCIPLINED"
-const MongoURL = process.env.MONGOURL
+const MongoURL = "mongodb://developer:developer123@ds143593.mlab.com:43593/herbert1228"
 console.log(MongoURL)
 
 const RESTAURANT = "rest"
@@ -66,6 +66,7 @@ MongoClient.connect(MongoURL, (err, db) => {
   app.get("/api/restaurant/", (req, res) => {
     res.render("create")
   })
+
 
   app.post("/api/restaurant/", (req, res) => {
     const {name, borough, cuisine, street, building, zipcode, coord} = req.body
