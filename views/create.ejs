@@ -18,7 +18,7 @@
     </nav>
 
     <div class="section">
-      <form action='/api/restaurant/' method='post'>
+      <form action='/create' method='post' enctype="multipart/form-data">
 
         <div class="field">
           <label class="label">Restaurant name:</label>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="field">
-          <label class="label">Borugh:</label>
+          <label class="label">Borough:</label>
           <div class="control">
             <input name="borough" class="input" type="text"/>
           </div>
@@ -72,14 +72,14 @@
         <div class="field">
           <label class="label">Coordinate X:</label>
           <div class="control">
-            <input type="text" name="coordX"/>
+            <input type="number" step="any" name="coordX"/>
           </div>
         </div>
 
         <div class="field">
           <label class="label">Coordinate Y:</label>
           <div class="control">
-            <input type="text" name="coordY"/>
+            <input type="number" step="any" name="coordY"/>
           </div>
         </div>
 
@@ -93,7 +93,7 @@
           <a class="button is-text" href="/read">Back</a>
         </div>
 
-      </div>
-    </form>
+      </form>
+    </div>
   </body>
 </html>

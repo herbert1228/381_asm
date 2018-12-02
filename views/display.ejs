@@ -1,5 +1,6 @@
 <html lang="en">
   <head>
+<<<<<<< HEAD
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
@@ -62,5 +63,42 @@
           <%=error%>
         <% } %>
       </div>
+=======
+      <title><%=r.name%></title>
+  </head>
+  <body>
+  <% if (r.photo != null) { %>
+    <img src="data:<%=r.photo.mimetype%>;base64,<%=r.photo.image%>" width="50%" height="50%" alt="base64 test"/><br>
+  <% } %>
+  Name: <%=r.name%><br>
+  Borough: <%=r.borough%><br>
+  Cuisine: <%=r.cuisine%><br>
+  Street: <%=r.address.street%><br>
+  Building: <%=r.address.building%><br>
+  Zipcode: <%=r.address.zipcode%><br>
+  GPS: [<%=r.address.coord.coordX%>, <%=r.address.coord.coordY%>]<br>
+  Rating:
+  <% if (typeof r.rate == "undefined") { %>
+    No rating yet
+  <% } else { %>
+    <ol>
+      <% r.rate.forEach( rate => { %>
+      <li>
+        <%=rate.value %> (<%= rate.userid %>)
+      </li>
+      <% }) %>
+    </ol>
+  <% } %>
+
+  <br>
+  Created by: <%=r.owner%><br>
+  <% if (r.address.coord.coordX != "" && r.address.coord.coordY != "") { %>
+    <a href="/googlemap?lat=<%=r.address.coord.coordX%>&lon=<%=r.address.coord.coordY%>&restaurant=<%=r.name%>">Google Map</a><br>
+  <% } %>
+  <a href="/rate?_id=<%=r._id%>">Rate</a><br>
+  <a href="/change?_id=<%=r._id%>">Edit</a><br>
+  <a href="/delete?_id=<%=r._id%>">Delete</a><br>
+    <a href="/read">back</a><br>
+>>>>>>> herbert/master
   </body>
 </html>

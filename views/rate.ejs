@@ -7,10 +7,6 @@
   </head>
 
   <body>
-    <% if (typeof error != "undefined") { %>
-      <p><%=error%><p>
-    <% } %>
-
     <nav class="navbar" style="background-color:#152934">
       <div class="navbar-brand">
         <h1 class="title is-1" style="color: #dee1e3">Rate</h1>
@@ -23,7 +19,7 @@
         <div class="field">
           <label class="label">Score(1-10):</label>
           <div class="control">
-            <input name="rate" class="input" type="text" required="required" max="10" min="0"/>
+            <input name="rate" class="input" type="number" required="required" max="10" min="1"/>
           </div>
         </div>
 
@@ -33,11 +29,14 @@
           </div>
         </div>
 
-        <div class="control">
-          <a class="button is-text" href="/read">Back</a>
-        </div>
+        <input type="hidden" name="_id" value=<%=_id%> >
+        <input type="hidden" name="userid" value=<%=userid%> >
 
       </form>
+
+      <div class="control">
+        <button class="button is-text" type="button" onclick="window.history.back()">Back</button>
+      </div>
     </div>
   </body>
 </html>
