@@ -22,11 +22,6 @@ const users = [
 
 MongoClient.connect(MongoURL, (err, db) => {
   if (err) throw err
-<<<<<<< HEAD
-  //const db = client.db("herbert1228")
-=======
-
->>>>>>> herbert/master
   app.set("view engine", "ejs")
   app.use(formidableMiddleware())
 
