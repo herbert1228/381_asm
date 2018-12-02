@@ -13,14 +13,8 @@
       </div>
     </nav>
 
-    <% if (error != null) { %>
-      <div class="control">
-        <a class="button is-text" href="/read">Back</a>
-      </div>
-    <% } else { %>
-
     <div class="section">
-      <form action='/change' method='post'>
+      <form action='/change' method='post' enctype="multipart/form-data">
 
         <div class="field">
           <label class="label">Restaurant name:</label>
@@ -44,44 +38,47 @@
         </div>
 
         <div class="field">
-          <label class="label">Photo:</label>
+          <label class="label">Photo (upload another photo to replace this one):</label>
           <div class="control">
             <input type="file" name="photo"/>
           </div>
         </div>
+        <% if (r.photo != null) { %>
+          <img src="data:<%=r.photo.mimetype%>;base64,<%=r.photo.image%>" width="50%" height="50%" alt="base64"/><br>
+        <% } %>
 
         <div class="field">
           <label class="label">Street:</label>
           <div class="control">
-            <input name="street" class="input" type="text" value=<%=r.street%> >
+            <input name="street" class="input" type="text" value=<%=r.address.street%> >
           </div>
         </div>
 
         <div class="field">
           <label class="label">Building:</label>
           <div class="control">
-            <input name="building" class="input" type="text" value=<%=r.building%> >
+            <input name="building" class="input" type="text" value=<%=r.address.building%> >
           </div>
         </div>
 
         <div class="field">
           <label class="label">Zipcode:</label>
           <div class="control">
-            <input name="zipcode" class="input" type="text" value=<%=r.zipcode%> >
+            <input name="zipcode" class="input" type="text" value=<%=r.address.zipcode%> >
           </div>
         </div>
 
         <div class="field">
           <label class="label">Coordinate X:</label>
           <div class="control">
-            <input type="text" name="coordX" value=<%=r.coordX%> >
+            <input type="number" step="any" name="coordX" value=<%=r.address.coord.coordX%> >
           </div>
         </div>
 
         <div class="field">
           <label class="label">Coordinate Y:</label>
           <div class="control">
-            <input type="text" name="coordY" value=<%=r.coordY%> >
+            <input type="number" step="any" name="coordY" value=<%=r.address.coord.coordY%> >
           </div>
         </div>
 
@@ -95,9 +92,8 @@
           <a class="button is-text" href="/read">Back</a>
         </div>
 
-        <input type="hidden" name="_id" value=<%=r._id%>
-      </div>
-    </form>
+        <input type="hidden" name="_id" value=<%=r._id%> >
+      </form>
+    </div>
   </body>
-  <% } %>
 </html>

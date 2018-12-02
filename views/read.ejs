@@ -1,22 +1,62 @@
 <html>
   <head>
-
+    <style>
+      select {
+        width: 20%
+      }
+    </style>
   </head>
   <body>
+    <form method="get" action="/read">
+      <label for="name">Restaurant Name: </label>
+      <select id="name" name="name">
+        <option></option>
+        <% restaurant.forEach( r => { if (r.name.trim() != "") { %>
+          <option value="<%=r.name%>" ><%=r.name%></option>
+        <% }}) %>
+      </select>
+
+      <label for="borough">Borough: </label>
+      <select id="borough" name="borough">
+        <option></option>
+        <% restaurant.forEach( r => { if (r.borough.trim() != "") { %>
+          <option value="<%=r.borough%>" ><%=r.borough%></option>
+        <% }}) %>
+      </select>
+
+      <label for="cuisine">Cuisine: </label>
+      <select id="cuisine" name="cuisine">
+        <option></option>
+        <% restaurant.forEach( r => { if (r.cuisine.trim() != "") { %>
+          <option value="<%=r.cuisine%>" ><%=r.cuisine%></option>
+        <% }}) %>
+      </select>
+      <input type="submit" value="Submit">
+    </form>
+
+    <form method="get" action="/read">
+      <input type="submit" value="Clear">
+    </form>
+
     <a href="/create">create new restaurant</a>
     <H1>Restaurant</H1>
     <H3>User: <%=self%></H3>
     <p>Restaurant name:</p>
     <ol>
-      <% restaurant.forEach( r => { %>
-        <li>
-          <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
-        </li>
-      <% }) %>
+      <% restaurant.forEach( r => {
+        if ((query.name == r.name || query.name == "" || query.name == null)&&
+            (query.borough == r.borough || query.borough == "" || query.borough == null)&&
+            (query.cuisine == r.cuisine || query.cuisine == "" || query.cuisine == null)) {
+      %>
+          <li>
+            <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
+          </li>
+      <% }}) %>
     </ol>
 
     <% if (restaurant.length == 0) { %>
       <p>No restaurants found</p>
     <% } %>
+    <a href="/logout">Logout</a>
   </body>
 </html>
