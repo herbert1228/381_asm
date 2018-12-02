@@ -68,7 +68,6 @@ MongoClient.connect(MongoURL, (err, db) => {
 
   app.get("/read", (req, res) => {
     const query = req.query
-
     findRestaurant(db, {}, (restaurant) => {
       res.render("read", {restaurant, self: req.session.userid, query})
     })

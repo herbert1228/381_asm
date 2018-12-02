@@ -1,39 +1,77 @@
 <html lang="en">
   <head>
-      <title><%=r.name%></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <title><%=r.name%>Display</title>
   </head>
-  <body>
-  <% if (r.photo != null) { %>
-    <img src="data:<%=r.photo.mimetype%>;base64,<%=r.photo.image%>" width="50%" height="50%" alt="base64 test"/><br>
-  <% } %>
-  Name: <%=r.name%><br>
-  Borough: <%=r.borough%><br>
-  Cuisine: <%=r.cuisine%><br>
-  Street: <%=r.address.street%><br>
-  Building: <%=r.address.building%><br>
-  Zipcode: <%=r.address.zipcode%><br>
-  GPS: [<%=r.address.coord.coordX%>, <%=r.address.coord.coordY%>]<br>
-  Rating:
-  <% if (typeof r.rate == "undefined") { %>
-    No rating yet
-  <% } else { %>
-    <ol>
-      <% r.rate.forEach( rate => { %>
-      <li>
-        <%=rate.value %> (<%= rate.userid %>)
-      </li>
-      <% }) %>
-    </ol>
-  <% } %>
 
-  <br>
-  Created by: <%=r.owner%><br>
-  <% if (r.address.coord.coordX != "" && r.address.coord.coordY != "") { %>
-    <a href="/googlemap?lat=<%=r.address.coord.coordX%>&lon=<%=r.address.coord.coordY%>&restaurant=<%=r.name%>">Google Map</a><br>
-  <% } %>
-  <a href="/rate?_id=<%=r._id%>">Rate</a><br>
-  <a href="/change?_id=<%=r._id%>">Edit</a><br>
-  <a href="/delete?_id=<%=r._id%>">Delete</a><br>
-    <a href="/read">back</a><br>
-  </body>
+    <body>
+      <nav class="navbar" style="background-color:#152934">
+        <div class="navbar-brand">
+          <h1 class="title is-1" style="color: #dee1e3">Display <%=r.name%></h1>
+        </div>
+      </nav>
+
+      <div class="section">
+        <% if (r.photo != null) { %>
+          <img src="data:<%=r.photo.mimetype%>;base64,<%=r.photo.image%>" width="50%" height="50%" alt="base64 test"/><br>
+        <% } %>
+        <div class="field">
+          <label class="name" style="color: #4f9688">Name: </label><%=r.name%><br>
+        </div>
+        <div class="field">
+          <label class="borough" style="color: #4f9688">Borough: </label><%=r.borough%><br>
+        </div>
+        <div class="field">
+          <label class="cuisine" style="color: #4f9688">Cuisine: </label><%=r.cuisine%><br>
+        </div>
+        <div class="field">
+          <label class="street" style="color: #4f9688">Street: </label><%=r.address.street%><br>
+        </div>
+        <div class="field">
+          <label class="building" style="color: #4f9688">Building: </label><%=r.address.building%><br>
+        </div>
+        <div class="field">
+          <label class="zipcode" style="color: #4f9688">Zipcode: </label><%=r.address.zipcode%><br>
+        </div>
+        <div class="field">
+            <label class="gps" style="color: #4f9688">GPS: </label>[<%=r.address.coord.coordX%> <%=r.address.coord.coordY%>]<br/>
+        </div>
+        <div class="field">
+          <label class="rating" style="color: #4f9688">Rating: </labal><br/>
+            <% if (typeof r.rate == "undefined") { %>
+            <label class="no-rating">No rating yet</label>
+            <% } else { %>
+              <ol class="is-lower-alpha">
+                <% r.rate.forEach( rate => { %>
+                <li style="margin-left: 30px;">
+                  <label class="rating-item" style="color: #4a4a4a"><%=rate.value %> (<%= rate.userid %>)</label>
+                </li>
+                <% }) %>
+              </ol>
+            <% } %>
+          </label>
+        </div>
+        <div class="field">
+          <labal class="owner" style="color: #4f9688">Created by: </labal><%=r.owner%><br/>
+        </div>
+
+        <% if (r.address.coord.coordX != "" && r.address.coord.coordY != "") { %>
+        <div class="field">
+          <div class="control">
+            <a class="button is-text" style="color: blue" href="/googlemap?lat=<%=r.address.coord.coordX%>&lon=<%=r.address.coord.coordY%>&restaurant=<%=r.name%>">Google Map</a><br>
+          </div>
+        </div>
+        <% } %>
+
+        <div>
+          <a class="button is-link" href="/rate?_id=<%=r._id%>">Rate</a>
+          <a class="button is-link" href="/change?_id=<%=r._id%>">Edit</a>
+          <a class="button is-link" href="/delete?_id=<%=r._id%>">Delete</a>
+          <a class="button is-link" href="/read">back</a>
+        </div>
+
+      </div>
+    </body>
 </html>

@@ -6,7 +6,28 @@
     <title>Read</title>
     <style>
       select {
-        width: 20%
+        width: 70%;
+        margin-bottom: 10px;
+      }
+      #rest-table {
+        padding-top: 40px;
+        padding-left: 150px;
+      }
+      .subtitle {
+        background-color: whitesmoke;
+        border-top: 2px solid;
+        min-height: 100%;
+      }
+      .heading {
+        background-color: #dee1e3;
+        height: 170px;
+        width: 100%;
+        margin-bottom: 0;
+        padding-top: 15px;
+      }
+      .hero-body {
+        margin-top: 0;
+        padding-top: 0;
       }
     </style>
   </head>
@@ -14,29 +35,101 @@
   <body>
     <nav class="navbar" style="background-color:#152934">
       <div class="navbar-brand">
-        <a href="/create"><h1 class="title is-1" style="color: #dee1e3">Create New Restaurant</h1></a>
+        <h1 class="title is-1" style="color: #dee1e3">Read Restaurant</h1>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-light" href="/logout" style="color: black">Logout</a>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="section">
-      <h1 class="title is-1">Restaurant</h1>
-      <h3 class="title is-3">User: <%=self%></h3>
-      <div class="content">
-        <p class="title is-3 is-spaced">Restaurant name:</p>
-        <ol class="is-lower-alpha">
-          <% restaurant.forEach( r => { %>
-            <li>
-              <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
-            </li>
-          <% }) %>
-        </ol>
-      </div>
-    </div>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <div class="heading">
+            <h1 class="title is-1">Restaurant</h1>
+            <h3 class="title is-3">User: <b><%=self%></b></h3>
+          </div>
 
-    <div class="section">
-      <% if (restaurant.length == 0) { %>
-        <p class="title is-3 is-spaced">No restaurants found</p>
-      <% } %>
-    </div>
+            <div class="subtitle">
+              <div class="columns">
+                <div class="column is-one-fifth">
+                  <div class="section">
+                    <form method="get" action="/read">
+                      <label for="name">Restaurant Name:</label><br/>
+                      <select id="name" name="name">
+                        <option></option>
+                        <% restaurant.forEach( r => { if (r.name.trim() != "") { %>
+                        <option value="<%=r.name%>" ><%=r.name%></option>
+                        <% }}) %>
+                      </select><br/>
+
+                      <label for="borough">Borough:</label><br/>
+                      <select id="borough" name="borough">
+                        <option></option>
+                        <% restaurant.forEach( r => { if (r.borough.trim() != "") { %>
+                        <option value="<%=r.borough%>" ><%=r.borough%></option>
+                        <% }}) %>
+                      </select><br/>
+
+                      <label for="cuisine">Cuisine:</label><br/>
+                      <select id="cuisine" name="cuisine">
+                        <option></option>
+                        <% restaurant.forEach( r => { if (r.cuisine.trim() != "") { %>
+                        <option value="<%=r.cuisine%>" ><%=r.cuisine%></option>
+                        <% }}) %>
+                      </select><br/>
+                      <div class="field is-grouped">
+                        <div class="control">
+                          <button class="button is-link">Search</button>
+                        </div>
+                      </div>
+                    </form>
+                    <form method="get" action="/read">
+                      <div class="field is-grouped">
+                        <div class="control">
+                          <button class="button is-link">Clear search</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="column" id="rest-table">
+                  <div class="control">
+                    <a class="button is-text" href="/create" style="color: black">Create New Restaurant</a>
+                  </div>
+
+                  <div class="content">
+                    <p class="title is-3 is-spaced">Restaurant:</p>
+                    <ol>
+                      <% restaurant.forEach( r => {
+                        if ((query.name == r.name || query.name == "" || query.name == null)&&
+                            (query.borough == r.borough || query.borough == "" || query.borough == null)&&
+                            (query.cuisine == r.cuisine || query.cuisine == "" || query.cuisine == null)){
+                      %>
+                      <li>
+                        <div class="control">
+                          <a class="button is-text" href="/display?_id=<%=r._id %>"><%= r.name %></a>
+                        </div>
+                      </li>
+                      <% }}) %>
+                    </ol>
+
+                    <% if (restaurant.length == 0) { %>
+                    <p>No restaurants found</p>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+
+
   </body>
 </html>
