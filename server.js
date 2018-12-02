@@ -316,7 +316,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     res.redirect("/read")
   })
 
-  app.listen(8099)
+  app.listen(process.env.PORT || 8099)
   console.log("server started!")
 })
 
