@@ -1,62 +1,88 @@
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <title>Read</title>
     <style>
       select {
         width: 20%
       }
     </style>
   </head>
+
   <body>
-    <form method="get" action="/read">
-      <label for="name">Restaurant Name: </label>
-      <select id="name" name="name">
-        <option></option>
-        <% restaurant.forEach( r => { if (r.name.trim() != "") { %>
-          <option value="<%=r.name%>" ><%=r.name%></option>
-        <% }}) %>
-      </select>
+    <nav class="navbar" style="background-color:#152934">
+      <div class="navbar-brand">
+        <h1 class="title is-1" style="color: #dee1e3">Read Restaurant</h1>
+      </div>
+    </nav>
 
-      <label for="borough">Borough: </label>
-      <select id="borough" name="borough">
-        <option></option>
-        <% restaurant.forEach( r => { if (r.borough.trim() != "") { %>
-          <option value="<%=r.borough%>" ><%=r.borough%></option>
-        <% }}) %>
-      </select>
+    <div class="control">
+      <a class="button is-text" href="/create">Create New Restaurant</a>
+    </div>
 
-      <label for="cuisine">Cuisine: </label>
-      <select id="cuisine" name="cuisine">
-        <option></option>
-        <% restaurant.forEach( r => { if (r.cuisine.trim() != "") { %>
-          <option value="<%=r.cuisine%>" ><%=r.cuisine%></option>
-        <% }}) %>
-      </select>
-      <input type="submit" value="Submit">
-    </form>
+    <div class="section">
+      <form method="get" action="/read">
+        <label for="name">Restaurant Name:</label><br/>
+        <select id="name" name="name">
+          <option></option>
+          <% restaurant.forEach( r => { if (r.name.trim() != "") { %>
+            <option value="<%=r.name%>" ><%=r.name%></option>
+          <% }}) %>
+        </select><br/>
 
-    <form method="get" action="/read">
-      <input type="submit" value="Clear">
-    </form>
+        <label for="borough">Borough:</label><br/>
+        <select id="borough" name="borough">
+          <option></option>
+          <% restaurant.forEach( r => { if (r.borough.trim() != "") { %>
+            <option value="<%=r.borough%>" ><%=r.borough%></option>
+          <% }}) %>
+        </select><br/>
 
-    <a href="/create">create new restaurant</a>
-    <H1>Restaurant</H1>
-    <H3>User: <%=self%></H3>
-    <p>Restaurant name:</p>
-    <ol>
-      <% restaurant.forEach( r => {
-        if ((query.name == r.name || query.name == "" || query.name == null)&&
-            (query.borough == r.borough || query.borough == "" || query.borough == null)&&
-            (query.cuisine == r.cuisine || query.cuisine == "" || query.cuisine == null)) {
-      %>
-          <li>
-            <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
-          </li>
-      <% }}) %>
-    </ol>
+        <label for="cuisine">Cuisine:</label><br/>
+        <select id="cuisine" name="cuisine">
+          <option></option>
+          <% restaurant.forEach( r => { if (r.cuisine.trim() != "") { %>
+            <option value="<%=r.cuisine%>" ><%=r.cuisine%></option>
+          <% }}) %>
+        </select><br/>
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Submit</button>
+          </div>
+        </div>
+      </form>
+      <form method="get" action="/read">
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Clear</button>
+          </div>
+        </div>
+      </form>
+      <h1 class="title is-1">Restaurant</h1>
+      <h3 class="title is-3">User: <b><%=self%></b></h3>
+      <div class="content">
+              <p class="title is-3 is-spaced">Restaurant Name:</p>
+              <ol class="is-lower-alpha">
+                <% restaurant.forEach( r => { %>
+                  <li>
+                    <div class="control">
+                      <a class="button is-text" href="/display?_id=<%=r._id %>"><%= r.name %></a>
+                    </div>
+                  </li>
+                <% }) %>
+              </ol>
 
-    <% if (restaurant.length == 0) { %>
-      <p>No restaurants found</p>
-    <% } %>
-    <a href="/logout">Logout</a>
+      <% if (restaurant.length == 0) { %>
+        <p>No restaurants found</p>
+      <% } %>
+        <div class="field is-grouped">
+          <div class="control">
+            <a class="button is-text" href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
