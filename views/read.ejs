@@ -1,22 +1,37 @@
-<html>
+<html lang="en">
   <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <title>Read</title>
   </head>
-  <body>
-    <a href="/create">create new restaurant</a>
-    <H1>Restaurant</H1>
-    <H3>User: <%=self%></H3>
-    <p>Restaurant name:</p>
-    <ol>
-      <% restaurant.forEach( r => { %>
-        <li>
-          <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
-        </li>
-      <% }) %>
-    </ol>
 
-    <% if (restaurant.length == 0) { %>
-      <p>No restaurants found</p>
-    <% } %>
+  <body>
+    <nav class="navbar" style="background-color:#152934">
+      <div class="navbar-brand">
+        <a href="/create"><h1 class="title is-1" style="color: #dee1e3">Create New Restaurant</h1></a>
+      </div>
+    </nav>
+
+    <div class="section">
+      <h1 class="title is-1">Restaurant</h1>
+      <h3 class="title is-3">User: <%=self%></h3>
+      <div class="content">
+        <p class="title is-3 is-spaced">Restaurant name:</p>
+        <ol class="is-lower-alpha">
+          <% restaurant.forEach( r => { %>
+            <li>
+              <a href="/display?_id=<%=r._id %>"><%= r.name %></a>
+            </li>
+          <% }) %>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <% if (restaurant.length == 0) { %>
+        <p class="title is-3 is-spaced">No restaurants found</p>
+      <% } %>
+    </div>
   </body>
 </html>

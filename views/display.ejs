@@ -1,28 +1,66 @@
-<html>
+<html lang="en">
   <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <title>Display</title>
   </head>
-  <body>
-    <a href="/read">back</a><br>
-    <% if (error == null) { %>
-      Name: <%=r.name%><br>
-      Borough: <%=r.borough%><br>
-      Cuisine: <%=r.cuisine%><br>
-      Street: <%=r.street%><br>
-      Building: <%=r.building%><br>
-      Zipcode: <%=r.zipcode%><br>
-      GPS: [<%=r.corrdX%>, <%=r.corrdY%>]<br>
-      Rating:
-      <% if (typeof r.rating == "undefined") { %>
-        No rating yet
-      <% } else r.rating.forEach(rate => rate) %>
-      <br>
-      Created by: <%=r.owner%><br>
-      <a href="/googlemap?lat=<%=r.coordX%>&lon=<%=r.coordY%>">Google Map</a><br>
-      <a href="/rate?_id=<%=r._id%>">Rate</a><br>
-      <a href="/change?_id=<%=r._id%>">Edit</a><br>
-    <% } else { %>
-      <%=error%>
-    <% } %>
+    <body>
+
+      <nav class="navbar" style="background-color:#152934">
+        <div class="navbar-brand">
+          <h1 class="title is-1" style="color: #dee1e3">Display The Restaurant</h1>
+        </div>
+      </nav>
+
+      <div class="section">
+        <div class="control">
+          <a class="button is-link" href="/read">Back</a>
+        </div>
+        <% if (error == null) { %>
+          <div class="field">
+            <label class="name">Name: <%=r.name%></label><br/>
+          </div>
+          <div class="field">
+              <label class="borough">Borough: <%=r.borough%></label><br/>
+          </div>
+          <div class="field">
+              <label class="cuisine">Cuisine: <%=r.cuisine%></label><br/>
+          </div>
+          <div class="field">
+              <label class="street">Street: <%=r.street%></label><br/>
+          </div>
+          <div class="field">
+              <label class="building">Building: <%=r.building%></label><br/>
+          </div>
+          <div class="field">
+              <label class="zipcode">Zipcode: <%=r.zipcode%></label><br/>
+          </div>
+          <div class="field">
+            <label class="gps">GPS: [<%=r.corrdX%>, <%=r.corrdY%>]</label><br/>
+          </div>
+          <div class="field">
+            <label class="rating">Rating:
+              <% if (typeof r.rating == "undefined") { %>
+                  No rating yet
+              <% } else r.rating.forEach(rate => rate) %>
+            </label><br/>
+          </div>
+          <div class="field">
+            <label class="created">Created by: <%=r.owner%></label><br />
+          </div>
+          <div class="control">
+            <a class="button is-primary" href="/googlemap?lat=<%=r.coordX%>&lon=<%=r.coordY%>">Google Map</a>
+          </div>
+          <div class="control">
+            <a class="button is-primary" href="/rate?_id=<%=r._id%>">Rate</a>
+          </div>
+          <div class="control">
+            <a class="button is-primary" href="/change?_id=<%=r._id%>">Edit</a>
+          </div>
+        <% } else { %>
+          <%=error%>
+        <% } %>
+      </div>
   </body>
 </html>
