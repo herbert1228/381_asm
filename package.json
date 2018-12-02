@@ -11,13 +11,13 @@
   "license": "ISC",
   "devDependencies": {
     "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
-    "express-formidable": "^1.2.0",
-    "express-session": "^1.15.6",
+    "ejs": "2.6.1",
+    "express-formidable": "1.2.0",
+    "express-session": "1.15.6",
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
-    "mongodb": "^2.2.36",
-    "uuid": "^3.3.2"
+    "mongodb": "2.2.36",
+    "uuid": "3.3.2"
   },
   "dependencies": {
     "assert": "^1.4.1",
