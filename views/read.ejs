@@ -66,7 +66,7 @@
                       <label for="name">Restaurant Name:</label><br/>
                       <select id="name" name="name">
                         <option></option>
-                        <% restaurant.forEach( r => { if (r.name.trim() != "") { %>
+                        <% restaurant.forEach( r => { if (r.name != "") { %>
                         <option value="<%=r.name%>" ><%=r.name%></option>
                         <% }}) %>
                       </select><br/>
@@ -74,7 +74,7 @@
                       <label for="borough">Borough:</label><br/>
                       <select id="borough" name="borough">
                         <option></option>
-                        <% restaurant.forEach( r => { if (r.borough.trim() != "") { %>
+                        <% restaurant.forEach( r => { if (r.borough != "") { %>
                         <option value="<%=r.borough%>" ><%=r.borough%></option>
                         <% }}) %>
                       </select><br/>
@@ -82,7 +82,7 @@
                       <label for="cuisine">Cuisine:</label><br/>
                       <select id="cuisine" name="cuisine">
                         <option></option>
-                        <% restaurant.forEach( r => { if (r.cuisine.trim() != "") { %>
+                        <% restaurant.forEach( r => { if (r.cuisine != "") { %>
                         <option value="<%=r.cuisine%>" ><%=r.cuisine%></option>
                         <% }}) %>
                       </select><br/>
