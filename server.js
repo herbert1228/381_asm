@@ -51,7 +51,7 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.post("/api/restaurant/", async (req, res) => {
-    const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.fields
+    const {name, borough, cuisine, street, building, zipcode, coordX, coordY, user} = req.fields
 
     if (name == null) {
       res.status(200).json({status: "failed"})
@@ -59,7 +59,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     }
 
     const uploadPhoto = req.files.photo
-    const owner = req.session.userid
+    //const owner = req.session.userid
 
     let photo
     if (uploadPhoto != null) {
@@ -85,7 +85,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     }
 
     db.collection(RESTAURANT).insertOne(
-      {name, borough, cuisine, photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
+      {name, borough, cuisine, photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner: user},
       (err, insertOneWriteOpResult) => {
         assert.equal(err, null)
         if (!insertOneWriteOpResult) {
