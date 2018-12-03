@@ -40,13 +40,13 @@ MongoClient.connect(MongoURL, (err, db) => {
     }
 
     findRestaurant(db, criteria, (restaurant) => {
-      res.json(restaurant)
+      res.status(200).json(restaurant)
     })
   })
 
   app.get("/api/restaurant/", (req, res) => {
     findRestaurant(db, {}, (restaurant) => {
-      res.json(restaurant)
+      res.status(200).json(restaurant)
     })
   })
 
@@ -54,7 +54,7 @@ MongoClient.connect(MongoURL, (err, db) => {
     const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.fields
 
     if (name == null) {
-      res.json({status: "failed"})
+      res.status(200).json({status: "failed"})
       return
     }
 
@@ -89,9 +89,9 @@ MongoClient.connect(MongoURL, (err, db) => {
       (err, insertOneWriteOpResult) => {
         assert.equal(err, null)
         if (!insertOneWriteOpResult) {
-          res.json({status: "failed"})
+          res.status(200).json({status: "failed"})
         }
-        res.json({status: "ok", _id: insertOneWriteOpResult.insertedId})
+        res.status(200).json({status: "ok", _id: insertOneWriteOpResult.insertedId})
       }
     )
     // })
@@ -117,7 +117,7 @@ MongoClient.connect(MongoURL, (err, db) => {
   })
 
   app.use((req, res, next) => { //next()
-    // console.log(req.session)
+    console.log("Running login")
     if (req.session.authenticated){
       next()
     } else {

@@ -17,6 +17,7 @@
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "mongodb": "2.2.36",
+    "nodemon": "^1.18.7",
     "uuid": "3.3.2"
   },
   "dependencies": {
