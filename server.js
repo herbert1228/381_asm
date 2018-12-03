@@ -33,6 +33,70 @@ MongoClient.connect(MongoURL, (err, db) => {
     genid: req => uuid() //eslint-disable-line
   }))
 
+  app.get("/api/restaurant/:type/:target", (req, res) => {
+    const criteria = {}
+    if (req.params.type != null) {
+      criteria[req.params.type] = req.params.target
+    }
+
+    findRestaurant(db, criteria, (restaurant) => {
+      res.json(restaurant)
+    })
+  })
+
+  app.get("/api/restaurant/", (req, res) => {
+    findRestaurant(db, {}, (restaurant) => {
+      res.json(restaurant)
+    })
+  })
+
+  app.post("/api/restaurant/", async (req, res) => {
+    const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.fields
+
+    if (name == null) {
+      res.json({status: "failed"})
+      return
+    }
+
+    const uploadPhoto = req.files.photo
+    const owner = req.session.userid
+
+    let photo
+    if (uploadPhoto != null) {
+      const filename = uploadPhoto.path
+      const mimetype = uploadPhoto.type
+
+      if (uploadPhoto.size !== 0 && (mimetype === "image/jpeg" || mimetype === "image/png")) {
+        await new Promise((resolve, reject) => {
+          fs.readFile(filename, (err, data) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(
+                photo = {
+                  mimetype,
+                  image: new Buffer(data).toString("base64")
+                }
+              )
+            }
+          })
+        })
+      }
+    }
+
+    db.collection(RESTAURANT).insertOne(
+      {name, borough, cuisine, photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
+      (err, insertOneWriteOpResult) => {
+        assert.equal(err, null)
+        if (!insertOneWriteOpResult) {
+          res.json({status: "failed"})
+        }
+        res.json({status: "ok", _id: insertOneWriteOpResult.insertedId})
+      }
+    )
+    // })
+  })
+
   app.get("/login", (req, res) => {
     if (!req.session.authenticated){
       res.status(200).render("login")
@@ -125,70 +189,6 @@ MongoClient.connect(MongoURL, (err, db) => {
           res.render("create", {error: "some error occurs"})
         }
         res.redirect("/read")
-      }
-    )
-    // })
-  })
-
-  app.get("/api/restaurant/:type/:target", (req, res) => {
-    const criteria = {}
-    if (req.params.type != null) {
-      criteria[req.params.type] = req.params.target
-    }
-
-    findRestaurant(db, criteria, (restaurant) => {
-      res.json(restaurant)
-    })
-  })
-
-  app.get("/api/restaurant/", (req, res) => {
-    findRestaurant(db, {}, (restaurant) => {
-      res.json(restaurant)
-    })
-  })
-
-  app.post("/api/restaurant/", async (req, res) => {
-    const {name, borough, cuisine, street, building, zipcode, coordX, coordY} = req.fields
-
-    if (name == null) {
-      res.json({status: "failed"})
-      return
-    }
-
-    const uploadPhoto = req.files.photo
-    const owner = req.session.userid
-
-    let photo
-    if (uploadPhoto != null) {
-      const filename = uploadPhoto.path
-      const mimetype = uploadPhoto.type
-
-      if (uploadPhoto.size !== 0 && (mimetype === "image/jpeg" || mimetype === "image/png")) {
-        await new Promise((resolve, reject) => {
-          fs.readFile(filename, (err, data) => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve(
-                photo = {
-                  mimetype,
-                  image: new Buffer(data).toString("base64")
-                }
-              )
-            }
-          })
-        })
-      }
-    }
-
-    db.collection(RESTAURANT).insertOne(
-      {name, borough, cuisine, photo, address: {street, building, zipcode, coord: {coordX, coordY}}, owner},
-      (err, insertOneWriteOpResult) => {
-        assert.equal(err, null)
-        if (!insertOneWriteOpResult) {
-          res.json({status: "failed"})
-        }
-        res.json({status: "ok", _id: insertOneWriteOpResult.insertedId})
       }
     )
     // })
