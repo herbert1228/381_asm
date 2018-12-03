@@ -17,7 +17,8 @@ const RESTAURANT = "rest"
 
 const users = [
   {userid: "dev", password: "dev"},
-  {userid: "demo", password: ""}
+  {userid: "demo", password: ""},
+  {userid: "student", password: ""}
 ]
 
 MongoClient.connect(MongoURL, (err, db) => {
